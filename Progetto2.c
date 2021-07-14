@@ -7,9 +7,9 @@
 
 #define MAX_VIV 20
 
-#define nazione1_p 200
-#define nazione2_p 100
-#define nazione3_p 70
+#define nazione1_dichiarati 200
+#define nazione2_dichiarati 100
+#define nazione3_dichiarati 70
 
 // con produzione_viveri intendiamo l'azienda che produrrà i vari viveri.
 void *produzione_viveri(void *);
@@ -64,7 +64,7 @@ void *nazione_1(void * id){
     int prossimiPacchetti_prodotti = 0;
 
     while(true) {
-        while (contatore == 0) printf("\nNazione1: buffer empty\n");
+        while (contatore == 0) printf("\nNazione1: buffer vuoto\n");
 
         pthread_mutex_lock(&r3_mutex);
 
@@ -76,7 +76,7 @@ void *nazione_1(void * id){
 
         pthread_mutex_unlock(&r3_mutex);
 
-        if(nazione1_prodotti>=nazione1_prodotti/3) {
+        if(nazione1_prodotti>=nazione1_dichiarati/3) {
           break;
         }
 
@@ -100,7 +100,7 @@ void *nazione_2(void * id) {
         printf("Nazione 2: %d\n", prossimiPacchetti_prodotti);
         pthread_mutex_unlock(&r3_mutex);
 
-    if (nazione2_prodotti >= nazione2_prodotti/3) break;
+    if (nazione2_prodotti >= nazione2_dichiarati/3) break;
 
 
     }
@@ -125,7 +125,7 @@ void *nazione_3(void * id) {
         pthread_mutex_unlock(&r3_mutex);
 
 
-    if (nazione3_prodotti >= nazione3_prodotti/3)
+    if (nazione3_prodotti >= nazione3_dichiarati/3)
       break;
 
 
@@ -166,18 +166,18 @@ int main() {
                         perror("pthread_create"), exit(1);
 
 
-    if (pthread_join(thread1, NULL) != 0){
+    if (pthread_join(thread1, NULL) != 0)
         perror("pthread_join"), exit(1);
-    }
-    if (pthread_join(thread2, NULL) != 0){
+    
+    if (pthread_join(thread2, NULL) != 0)
         perror("pthread_join"), exit(1);
-    }
-    if (pthread_join(thread3, NULL) != 0){
+    
+    if (pthread_join(thread3, NULL) != 0)
         perror("pthread_join"), exit(1);
-    }
-    if (pthread_join(thread4, NULL) != 0){
+    
+    if (pthread_join(thread4, NULL) != 0)
         perror("pthread_join"), exit(1);
-    }
+    
 
         for(int j = 0;j<MAX_VIV;j++) totaleEffettivo+=j;
 
@@ -189,9 +189,9 @@ int main() {
         printf("\nPacchetti restanti: %d",totaleEffettivo-viveri_distribuiti);
         printf("\n--------------------------------");
 
-        printf("\nNazione1 [pacchetti ricevute]: %d",n1_p);
-        printf("\nNazione2 [pacchetti ricevute]: %d",n2_p);
-        printf("\nNazione3 [pacchetti ricevute]: %d\n\n",n3_p);
+        printf("\nNazione1 [pacchetti ricevute]: %d",nazione1_prodotti);
+        printf("\nNazione2 [pacchetti ricevute]: %d",nazione2_prodotti);
+        printf("\nNazione3 [pacchetti ricevute]: %d\n\n",nazione3_prodotti);
 
     return 0;
 
